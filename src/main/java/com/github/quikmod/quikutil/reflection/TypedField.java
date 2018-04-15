@@ -51,10 +51,11 @@ public final class TypedField<T> {
 
     @Nullable
     public T get(@Nullable Object from) throws IllegalAccessException, IllegalArgumentException {
-        return (T) this.field.get(from);
+        return this.type.cast(this.field.get(from));
     }
     
     @Nonnull
+    @SuppressWarnings("unchecked")
     public Optional<T> attemptGet(@Nullable Object obj) {
         return (Optional<T>) ReflectionUtil.attemptGet(obj, this.field);
     }
@@ -76,6 +77,7 @@ public final class TypedField<T> {
         ReflectionUtil.attemptSet(obj, this.field, value, override);
     }
     
+    @SuppressWarnings("unchecked")
     public <S> Optional<TypedField<S>> castOptional(@Nonnull Class<S> type) {
         if (TypeUtil.isType(this.type, type)) {
             return Optional.of((TypedField<S>)this);
@@ -84,6 +86,7 @@ public final class TypedField<T> {
         }
     }
     
+    @SuppressWarnings("unchecked")
     public <S> Stream<TypedField<S>> castStream(@Nonnull Class<S> type) {
         if (TypeUtil.isType(this.type, type)) {
             return Stream.of((TypedField<S>)this);

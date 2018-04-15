@@ -81,6 +81,15 @@ dependencies {
 }
 
 // ==================================================
+// Compilation
+// ==================================================
+tasks.withType(JavaCompile) {
+    // The following ensures that xlint is on.
+    options.compilerArgs << '-Xlint:unchecked'
+    options.deprecation = true
+}
+
+// ==================================================
 // Code Coverage
 // ==================================================
 jacocoTestReport {

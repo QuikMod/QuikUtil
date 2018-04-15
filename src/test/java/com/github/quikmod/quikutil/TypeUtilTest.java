@@ -65,8 +65,8 @@ public class TypeUtilTest {
 	public void testAsList() {
 		System.out.println("asList");
 		Object[] elements = new Object[]{"Testing", 1, 2, 3};
-		List expResult = Arrays.asList(elements);
-		List result = TypeUtil.asList(elements);
+		List<Object> expResult = Arrays.asList(elements);
+		List<Object> result = TypeUtil.asList(elements);
 		assertEquals(expResult, result);
 	}
 	
@@ -77,8 +77,8 @@ public class TypeUtilTest {
 	public void testAsDeque() {
 		System.out.println("asDeque");
 		Object[] elements = new Object[]{"Testing", 1, 2, 3};
-        Deque expected = new ArrayDeque(Arrays.asList(elements));
-		Deque result = TypeUtil.asDeque(elements);
+        Deque<Object> expected = new ArrayDeque<>(Arrays.asList(elements));
+		Deque<Object> result = TypeUtil.asDeque(elements);
 		assertTrue(TypeUtil.areDequesEqual(expected, result));
 	}
 
@@ -89,8 +89,8 @@ public class TypeUtilTest {
 	public void testAsSet() {
 		System.out.println("asSet");
 		Object[] elements = new Object[]{"Testing", 1, 2, 3};
-        Set expResult = new HashSet(Arrays.asList(elements));
-		Set result = TypeUtil.asSet(elements);
+        Set<Object> expResult = new HashSet<>(Arrays.asList(elements));
+		Set<Object> result = TypeUtil.asSet(elements);
 		assertEquals(expResult, result);
 	}
 	
@@ -135,8 +135,8 @@ public class TypeUtilTest {
 		System.out.println("addAll");
 		Object[] elements = new Object[] {"Testing", "Testing", "Testing"};
 		Object[] added = new Object[]{1, 2, 3};
-        Collection collection = new ArrayList(Arrays.asList(elements));
-        Collection expResult = new ArrayList(Arrays.asList(elements));
+        Collection<Object> collection = new ArrayList<>(Arrays.asList(elements));
+        Collection<Object> expResult = new ArrayList<>(Arrays.asList(elements));
 		expResult.addAll(Arrays.asList(added));
 		assertEquals(expResult, TypeUtil.addAll(collection, added));
 	}
