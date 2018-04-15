@@ -1,22 +1,38 @@
-# Compiled class file
-*.class
+#
+# QuikUtil .gitignore
+#
 
-# Log file
-*.log
+# Ignore Rundirs.
+/run/
 
-# BlueJ files
-*.ctxt
+# Ignore IDE Files.
+/eclipse/
+/.nb-gradle/
+/nbproject/
+/.idea/
+/.nb-gradle-properties
+/.classpath
+/.project
+/.settings/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Ignore Gradle Stuff
+/gradle.properties
+/.gradle/
 
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# Ignore Git
+/.git/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Ignore Build Files
+/build/
+/dist/
+/out/
+/logs/
+/bin/
+
+# Ignore Config
+/config/
+
+# Ignore Dependencies
+dependencies.zip
+/libs/
+*.bak

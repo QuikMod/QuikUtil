@@ -1,0 +1,114 @@
+// ==================================================
+// Gradle Buildscript
+// ==================================================
+
+// ==================================================
+// Plugins
+// ==================================================
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'jacoco'
+
+// ==================================================
+// Primary configuration
+// ==================================================
+group = 'com.github.quikmod.quikutil'
+version = '0.0.0'
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+// ==================================================
+// Repositories
+// ==================================================
+repositories {
+	mavenLocal()
+    mavenCentral()
+	jcenter()
+}
+
+// ==================================================
+// Configurations
+// ==================================================
+configurations {
+	javadoc {
+		transitive false
+	}
+	testJavadoc {
+		transitive false
+	}
+}
+
+// ==================================================
+// Dependencies
+// ==================================================
+
+// 
+// Compilation Dependencies.
+//
+dependencies {
+    // Google Guava, since is essential library.
+    compile 'com.google.guava:guava:24.0-jre'
+    javadoc 'com.google.guava:guava:24.0-jre:javadoc'
+    
+    // JOOL for the missing parts of Java 8
+    compile 'org.jooq:jool-java-8:0.9.13'
+    javadoc 'org.jooq:jool-java-8:0.9.13:javadoc'
+    
+    // JSR305 for @nonnull annotations and such.
+    compile 'com.google.code.findbugs:jsr305:3.0.2'
+    javadoc 'com.google.code.findbugs:jsr305:3.0.2:javadoc'
+    
+    // Logback for handling all the logging.
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'ch.qos.logback:logback-classic:1.2.3:javadoc'
+}
+
+//
+// Test Dependencies
+//
+dependencies {
+    // JUnit 4 for testing.
+    testCompile 'junit:junit:4.12'
+    testJavadoc 'junit:junit:4.12:javadoc'
+    
+    // Truth for better assertions.
+    testCompile "com.google.truth:truth:0.40"
+    testCompile "com.google.truth:truth:0.40:javadoc"
+    
+    // Java 8 extensions for Truth
+    testCompile "com.google.truth.extensions:truth-java8-extension:0.40"
+    testCompile "com.google.truth.extensions:truth-java8-extension:0.40"
+}
+
+// ==================================================
+// Code Coverage
+// ==================================================
+jacocoTestReport {
+	group = "Reporting"
+	description = "Generate Jacoco coverage reports after running tests."
+	additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+
+// ==================================================
+// Sources Jar
+// ==================================================
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+// ==================================================
+// Javadoc Jar
+// ==================================================
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// ==================================================
+// Artifacts
+// ==================================================
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}

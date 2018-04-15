@@ -1,0 +1,41 @@
+#
+# Default Text Handling
+#
+* text=auto
+
+#
+# Text Files
+#
+*.css           text
+*.df            text
+*.htm           text
+*.html          text
+*.java          text
+*.js            text
+*.json          text
+*.jsp           text
+*.jspf          text
+*.jspx          text
+*.properties    text
+*.sh            text
+*.tld           text
+*.txt           text
+*.tag           text
+*.tagx          text
+*.xml           text
+*.yml           text
+
+#
+# Binary Files
+#
+*.class         binary
+*.dll           binary
+*.ear           binary
+*.gif           binary
+*.ico           binary
+*.jar           binary
+*.jpg           binary
+*.jpeg          binary
+*.png           binary
+*.so            binary
+*.war           binary
