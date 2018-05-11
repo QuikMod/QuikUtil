@@ -3,8 +3,10 @@
 package com.github.quikmod.quikutil;
 
 import com.google.common.base.Preconditions;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -39,24 +41,11 @@ public final class ResourceUtil {
 		try {
 			if (overwrite || !Files.exists(to)) {
 				Files.createDirectories(to.getParent());
-				Files.copy(getResourceAsStream(from), to, StandardCopyOption.REPLACE_EXISTING);
+				Files.copy(getResourceAsInputStream(from.toString()), to, StandardCopyOption.REPLACE_EXISTING);
 			}
 		} catch (IOException e) {
             LOG.error("Unable to copy Jar resource!\n\tFrom : \"{}\"\n\tTo   : \"{}\"!\n\tCause:\n\t\t{}", from, to, e.getLocalizedMessage().replaceAll(":\\s+", ":\n\t\t\t"));
 		}
-	}
-    
-    /**
-	 * Retrieves the requested resource by using the current thread's class
-	 * loader or the class loader of this class.
-	 *
-	 * @param location the location of the desired resource stream.
-	 * @return the resource, as a stream.
-	 */
-    @Nonnull
-    public static InputStream getResourceAsStream(@Nonnull Path location) {
-        Preconditions.checkNotNull(location, "The resource path may not be null!");
-        return getResourceAsStream(location.toString());
 	}
 
 	/**
@@ -67,10 +56,48 @@ public final class ResourceUtil {
 	 * @return the resource, as a stream.
 	 */
     @Nonnull
-	public static InputStream getResourceAsStream(@Nonnull String location) {
+	public static InputStream getResourceAsInputStream(@Nonnull String location) {
         Preconditions.checkNotNull(location, "The resource path may not be null!");
 		InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
 		return in != null ? in : ResourceUtil.class.getResourceAsStream(location);
+	}
+    
+    /**
+	 * Retrieves the requested resource by using the current thread's class
+	 * loader or the class loader of this class.
+	 *
+	 * @param location the location of the desired resource stream.
+	 * @return the resource, as an InputStreamReader.
+	 */
+    @Nonnull
+	public static InputStreamReader getResourceAsInputStreamReader(@Nonnull String location) {
+        // First, get the resource as a stream.
+        final InputStream in = getResourceAsInputStream(location);
+        
+        // Next, wrap the stream in a stream reader.
+        final InputStreamReader inr = new InputStreamReader(in);
+        
+        // Finally, return the input stream reader.
+        return inr;
+	}
+    
+    /**
+	 * Retrieves the requested resource by using the current thread's class
+	 * loader or the class loader of this class.
+	 *
+	 * @param location the location of the desired resource stream.
+	 * @return the resource, as a BufferedReader.
+	 */
+    @Nonnull
+    public static BufferedReader getResourceAsBufferedReader(@Nonnull String location) {
+        // First, get the resource as a stream.
+        final InputStreamReader in = getResourceAsInputStreamReader(location);
+        
+        // Next, wrap the InputStreamReader in a buffered reader.
+        final BufferedReader br = new BufferedReader(in);
+        
+        // Finally, return the buffered reader.
+        return br;
 	}
 
 }

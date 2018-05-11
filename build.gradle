@@ -60,7 +60,7 @@ dependencies {
     
     // Logback for handling all the logging.
     compile 'ch.qos.logback:logback-classic:1.2.3'
-    compile 'ch.qos.logback:logback-classic:1.2.3:javadoc'
+    javadoc 'ch.qos.logback:logback-classic:1.2.3:javadoc'
 }
 
 //
@@ -73,11 +73,11 @@ dependencies {
     
     // Truth for better assertions.
     testCompile "com.google.truth:truth:0.40"
-    testCompile "com.google.truth:truth:0.40:javadoc"
+    testJavadoc "com.google.truth:truth:0.40:javadoc"
     
     // Java 8 extensions for Truth
     testCompile "com.google.truth.extensions:truth-java8-extension:0.40"
-    testCompile "com.google.truth.extensions:truth-java8-extension:0.40"
+    testJavadoc "com.google.truth.extensions:truth-java8-extension:0.40"
 }
 
 // ==================================================
