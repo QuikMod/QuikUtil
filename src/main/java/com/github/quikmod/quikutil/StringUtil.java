@@ -31,4 +31,8 @@ public final class StringUtil {
 		return tokens;
 	}
 
+    private StringUtil() {
+        // Empty private constructor to prevent instantiation.
+    }
+
 }

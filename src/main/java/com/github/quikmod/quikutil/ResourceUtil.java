@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,11 +52,13 @@ public final class ResourceUtil {
 	/**
 	 * Retrieves the requested resource by using the current thread's class
 	 * loader or the class loader of this class.
+     * 
+     * TODO: Convert to optional return type.
 	 *
 	 * @param location the location of the desired resource stream.
-	 * @return the resource, as a stream.
+	 * @return the resource, as a stream, or null if the resource could not be found.
 	 */
-    @Nonnull
+    @Nullable
 	public static InputStream getResourceAsInputStream(@Nonnull String location) {
         Preconditions.checkNotNull(location, "The resource path may not be null!");
 		InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
@@ -67,12 +70,17 @@ public final class ResourceUtil {
 	 * loader or the class loader of this class.
 	 *
 	 * @param location the location of the desired resource stream.
-	 * @return the resource, as an InputStreamReader.
+	 * @return the resource, as an InputStreamReader, or null if the resource could not be found.
 	 */
-    @Nonnull
+    @Nullable
 	public static InputStreamReader getResourceAsInputStreamReader(@Nonnull String location) {
         // First, get the resource as a stream.
         final InputStream in = getResourceAsInputStream(location);
+        
+        // If the input stream is null, abort.
+        if (in == null) {
+            return null;
+        }
         
         // Next, wrap the stream in a stream reader.
         final InputStreamReader inr = new InputStreamReader(in);
@@ -86,12 +94,17 @@ public final class ResourceUtil {
 	 * loader or the class loader of this class.
 	 *
 	 * @param location the location of the desired resource stream.
-	 * @return the resource, as a BufferedReader.
+	 * @return the resource, as a BufferedReader, or null if the resource could not be found.
 	 */
-    @Nonnull
+    @Nullable
     public static BufferedReader getResourceAsBufferedReader(@Nonnull String location) {
         // First, get the resource as a stream.
         final InputStreamReader in = getResourceAsInputStreamReader(location);
+        
+        // If the input stream is null, abort.
+        if (in == null) {
+            return null;
+        }
         
         // Next, wrap the InputStreamReader in a buffered reader.
         final BufferedReader br = new BufferedReader(in);

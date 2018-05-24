@@ -35,7 +35,7 @@ public final class ReflectionUtil {
      * @return a stream containing all the fields for the class or object.
      */
     @Nonnull
-    public static final Stream<Constructor> streamConstructors(@Nonnull Object from) {
+    public static final Stream<Constructor<?>> streamConstructors(@Nonnull Object from) {
         Preconditions.checkNotNull(from);
         return Arrays.stream(TypeUtil.classify(from).getConstructors());
     }
@@ -286,7 +286,7 @@ public final class ReflectionUtil {
     public static final <T> Optional<T> attemptInstantiate(@Nonnull Class<T> clazz, @Nonnull Object... parameters) {
         Objects.requireNonNull(clazz);
         Objects.requireNonNull(parameters);
-        Class types[] = new Class[parameters.length];
+        Class<?> types[] = new Class<?>[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             types[i] = parameters[i].getClass();
         }

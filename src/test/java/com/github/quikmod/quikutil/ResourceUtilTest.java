@@ -22,6 +22,7 @@ import org.junit.rules.TemporaryFolder;
 import static org.junit.Assert.*;
 import static com.google.common.truth.Truth.*;
 import static com.google.common.truth.Truth8.*;
+import java.io.BufferedReader;
 import java.nio.file.Path;
 
 
@@ -89,7 +90,14 @@ public class ResourceUtilTest {
             raf.getChannel().lock();
             ResourceUtil.copyResource(TEST_FILE_PATH_INTERNAL, filefail.toPath(), true);
         }
-        
+    }
+    
+    @Test
+    public void testGetMissingResource() throws IOException {
+        try (BufferedReader input = ResourceUtil.getResourceAsBufferedReader("not/a/resource")) {
+            // Since the resource does not exist, the method should have returned null.
+            assertThat(input).named("non-existing resource").isNull();
+        }
     }
 
 }
