@@ -38,11 +38,11 @@ import javax.annotation.Nullable;
  * This class is intended as to provide additional information in stack traces
  * as to aid in the debugging process.
  * 
- * @see ContextedRuntimeException
+ * @see ContextedException
  *
  * @author Ryan
  */
-public class ContextedException extends Exception {
+public class ContextedRuntimeException extends RuntimeException {
 
     /**
      * The serialization version.
@@ -59,31 +59,31 @@ public class ContextedException extends Exception {
      * message.
      */
     @Nonnull
-    public ContextedException() {
+    public ContextedRuntimeException() {
         this.context = new SimpleExceptionContext();
     }
 
     /**
-     * Constructs an instance of <code>ContextedException</code> with the
+     * Constructs an instance of <code>ContextedRuntimeException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      */
     @Nonnull
-    public ContextedException(final String msg) {
+    public ContextedRuntimeException(final String msg) {
         super(msg);
         this.context = new SimpleExceptionContext();
     }
 
     /**
-     * Constructs an instance of <code>ContextedException</code> with the
+     * Constructs an instance of <code>ContextedRuntimeException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      * @param cause the cause of the exception.
      */
     @Nonnull
-    public ContextedException(final String msg, final Throwable cause) {
+    public ContextedRuntimeException(final String msg, final Throwable cause) {
         super(msg, cause);
         this.context = new SimpleExceptionContext();
     }
@@ -97,7 +97,7 @@ public class ContextedException extends Exception {
      * @return the exception instance, for method chaining.
      */
     @Nonnull
-    public ContextedException withContext(@Nonnull String key, @Nullable Object value) {
+    public ContextedRuntimeException withContext(@Nonnull String key, @Nullable Object value) {
         this.context.withEntry(key, value);
         return this;
     }

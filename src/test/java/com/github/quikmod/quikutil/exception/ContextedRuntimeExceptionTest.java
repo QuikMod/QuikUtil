@@ -39,9 +39,9 @@ import org.junit.Test;
  *
  * @author Ryan
  */
-public class ContextedExceptionTest {
+public class ContextedRuntimeExceptionTest {
     
-    public ContextedExceptionTest() {
+    public ContextedRuntimeExceptionTest() {
     }
     
     @BeforeClass
@@ -61,7 +61,7 @@ public class ContextedExceptionTest {
     }
 
     /**
-     * Test of getMessage method, of class ContextedException.
+     * Test of getMessage method, of class ContextedRuntimeException.
      */
     @Test
     public void testGetMessage() {
@@ -82,17 +82,17 @@ public class ContextedExceptionTest {
         final String expectedMessage = sb.toString();
         
         // Crate Instance.
-        final ContextedException instance = new ContextedException(testMessage);
+        final ContextedRuntimeException instance = new ContextedRuntimeException(testMessage);
         instance.getContext().withEntry("ctx1", "test value");
         
         // Perform Assertions.
-        Truth.assertWithMessage("ContextedException.getMessage() returns correct message.")
+        Truth.assertWithMessage("ContextedRuntimeException.getMessage() returns correct message.")
                 .that(instance.getMessage())
                 .isEqualTo(expectedMessage);
     }
 
     /**
-     * Test of getRawMessage method, of class ContextedException.
+     * Test of getRawMessage method, of class ContextedRuntimeException.
      */
     @Test
     public void testGetRawMessage() {
@@ -101,25 +101,25 @@ public class ContextedExceptionTest {
         
         // Define Constants
         final String testMessage = "Test Message...";
-        final ContextedException instance = new ContextedException(testMessage);
+        final ContextedRuntimeException instance = new ContextedRuntimeException(testMessage);
         
         // Perform Assertions
-        Truth.assertWithMessage("ContextedException.getRawMessage() returns correct raw exception message.")
+        Truth.assertWithMessage("ContextedRuntimeException.getRawMessage() returns correct raw exception message.")
                 .that(instance.getRawMessage())
                 .isEqualTo(testMessage);
     }
     
     /**
-     * Test of getRawMessage method, of class ContextedException.
-     * @throws com.github.quikmod.quikutil.exception.ContextedException
+     * Test of getRawMessage method, of class ContextedRuntimeException.
+     * @throws com.github.quikmod.quikutil.exception.ContextedRuntimeException
      */
-    @Test(expected = ContextedException.class)
-    public void testContextedException() throws ContextedException {
+    @Test(expected = ContextedRuntimeException.class)
+    public void testContextedRuntimeException() throws ContextedRuntimeException {
         // Log Test Start
-        System.out.println("ContextedException");
+        System.out.println("ContextedRuntimeException");
         
         // Create Instance.
-        final ContextedException instance = new ContextedException("Test ContextedException")
+        final ContextedRuntimeException instance = new ContextedRuntimeException("Test ContextedRuntimeException")
                 .withContext("ctx1", "Test context 1.")
                 .withContext("ctx2", "Test context 2.")
                 .withContext("ctx3", "Test context 3.");
@@ -134,7 +134,7 @@ public class ContextedExceptionTest {
     @Test(expected = AssertionError.class)
     public void testExceptionBuilder() throws AssertionError {
         // Log Test Start
-        System.out.println("ContextedException");
+        System.out.println("ContextedRuntimeException");
         
         // Create Instance.
         final ExceptionMessageBuilder eb = new ExceptionMessageBuilder("Testing 1, 2, 3...");
