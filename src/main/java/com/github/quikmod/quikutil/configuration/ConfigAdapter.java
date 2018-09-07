@@ -43,9 +43,23 @@ public interface ConfigAdapter {
      * @param <V> the type to check support for.
      * @param type the type token form of the type to check support for.
      * @return {@literal true} if and only if the given type is supported by the
-     * configuration system.
+     * configuration system, {@literal false} otherwise.
      */
     <V> boolean isTypeSupported(@Nonnull Class<V> type);
+
+    /**
+     * Method to check whether or not the given configuration adapter supports
+     * the given constraint type.
+     *
+     * This method should return false in the case that the type that the
+     * constraint applies to is not supported by the configuration adapter.
+     *
+     * @param <V> the type that the constraint applies to.
+     * @param constraint the constraint to check for support.
+     * @return {@literal true} if and only if the given constraint and its type
+     * is supported by the configuration system, {@literal false} otherwise.
+     */
+    <V> boolean isConstraintSupported(@Nonnull ConfigEntryConstraint<V> constraint);
 
     /**
      * Method to retrieve a configuration value from some source.

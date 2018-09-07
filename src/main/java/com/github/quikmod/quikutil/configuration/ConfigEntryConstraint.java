@@ -39,10 +39,20 @@ import javax.annotation.Nonnull;
 public interface ConfigEntryConstraint<V> {
 
     /**
+     * Retrieves the value type that this constraint applies to.
+     *
+     * @return a type token representing the type of value that this constraint
+     * applies to.
+     */
+    @Nonnull
+    Class<V> getValueType();
+
+    /**
      * Checks if the given value meets this constraint.
      *
      * @param value the value to check this constraint against.
-     * @return {@literal true} if and only if the value meets this constraint, false otherwise.
+     * @return {@literal true} if and only if the value meets this constraint,
+     * false otherwise.
      */
     boolean check(@Nonnull V value);
 
