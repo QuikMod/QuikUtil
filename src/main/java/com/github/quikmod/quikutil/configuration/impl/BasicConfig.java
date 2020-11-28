@@ -31,6 +31,7 @@ import com.github.quikmod.quikutil.TypeUtil;
 import com.github.quikmod.quikutil.configuration.Config;
 import com.github.quikmod.quikutil.configuration.ConfigAdapter;
 import com.github.quikmod.quikutil.configuration.ConfigEntry;
+import com.github.quikmod.quikutil.configuration.ConfigStub;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Optional;
@@ -44,6 +45,8 @@ import javax.annotation.Nullable;
  */
 public class BasicConfig implements Config {
     
+    @Nonnull
+    private final ConfigStub stub;
     @Nonnull
     private final ConfigAdapter adapter;
     @Nonnull
@@ -67,10 +70,12 @@ public class BasicConfig implements Config {
 
     @Override
     public <V> boolean hasEntry(String key, Class<V> type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Return getEntry().isPresent() for the time being.
+        return this.getEntry(key, type).isPresent();
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <V> Optional<ConfigEntry<V>> getEntry(String key, Class<V> type) {
         // Attempt to get.
         @Nullable

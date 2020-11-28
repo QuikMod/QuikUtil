@@ -27,9 +27,9 @@
 // =========================================================================
 package com.github.quikmod.quikutil.configuration.impl;
 
-import com.github.quikmod.quikutil.configuration.ConfigAdapter;
 import com.github.quikmod.quikutil.configuration.ConfigEntry;
 import com.github.quikmod.quikutil.configuration.ConfigEntryConstraint;
+import com.github.quikmod.quikutil.configuration.ConfigStub;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import javax.annotation.Nonnegative;
@@ -61,26 +61,24 @@ public final class BasicConfigEntry<V> implements ConfigEntry<V> {
     private final short reloadLevel;
     @Nonnull
     private final ImmutableList<ConfigEntryConstraint<V>> constraints;
-    @Nonnull
-    private final ConfigAdapter adapter;
 
     public BasicConfigEntry(
+            @Nonnull ConfigStub stub,
             @Nonnull String key,
             @Nonnull String comment,
             @Nonnull Class<V> valueType,
             @Nonnull V defaultValue,
             @Nonnegative short reloadLevel,
-            @Nonnull ImmutableList<ConfigEntryConstraint<V>> constraints,
-            @Nonnull ConfigAdapter adapter
+            @Nonnull ImmutableList<ConfigEntryConstraint<V>> constraints
     ) {
         // Validate
+        Preconditions.checkNotNull(stub, "The configuration stub associated with a configuration entry may not be null!");
         Preconditions.checkNotNull(key, "The key associated with a configuration entry may not be null!");
         Preconditions.checkNotNull(comment, "The comment associated with a configuration entry may not be null!");
         Preconditions.checkNotNull(valueType, "The value type token associated with a configuration entry may not be null!");
         Preconditions.checkNotNull(defaultValue, "The default value associated with a configuration entry may not be null!");
         Preconditions.checkArgument(reloadLevel >= 0, "The reload level associated with a configuration entry may not be negative!");
         Preconditions.checkNotNull(constraints, "The list of constraints associated with a configuration entry may not be null!");
-        Preconditions.checkNotNull(adapter, "The configuration adapter associated with a configuration entry may not be null!");
 
         // Assign.
         this.key = key;
@@ -92,7 +90,6 @@ public final class BasicConfigEntry<V> implements ConfigEntry<V> {
         this.futureValue = defaultValue;
         this.reloadLevel = reloadLevel;
         this.constraints = constraints;
-        this.adapter = adapter;
     }
 
     @Override
@@ -141,29 +138,21 @@ public final class BasicConfigEntry<V> implements ConfigEntry<V> {
     }
 
     @Override
-    public ConfigAdapter getAdapter() {
-        return this.adapter;
-    }
-
-    @Override
-    public void refresh() {
-        this.reload((short) 0);
-    }
-
-    @Override
-    public void reload(short reloadLevel) {
-        // Step 1. Get the new value.
-        final V newValue = this.adapter.getValue(this);
-
-        // Step 2. Validate the new value.
-        if (newValue == null || !this.constraints.stream().allMatch(c -> c.check(newValue))) {
-            // In this case do nothing, we'll just pretend we did not see that value.
-            return;
+    public void setValue(@Nonnull V newValue) {
+        // Validate.
+        Preconditions.checkNotNull(newValue, "The value associated with a configuration element may not be null!");
+        
+        // Check constraints.
+        for (ConfigEntryConstraint<V> constraint : this.constraints) {
+            Preconditions.checkArgument(constraint.check(newValue), "Invalid value: %s!", newValue);
         }
-
-        // Step 3. Transfer over the new value to the next value slot.
+        
+        // Assign value.
         this.futureValue = newValue;
+    }
 
+    @Override
+    public void reload() {
         // Step 4. Check if reload level is high enough to transfer over into current.
         if (reloadLevel < this.reloadLevel) {
             // Looks like we shouldn't update current.

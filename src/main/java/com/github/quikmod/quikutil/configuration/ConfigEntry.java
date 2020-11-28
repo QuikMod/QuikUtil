@@ -131,19 +131,12 @@ public interface ConfigEntry<V> {
     ImmutableList<ConfigEntryConstraint<V>> getConstraints();
 
     /**
-     * Retrieves the configuration adapter used internally by this configuration
-     * entry.
+     * Sets the value that is to be associated with this entry on the next
+     * configuration reload of adequate level.
      *
-     * @return the configuration adapter used by this configuration entry.
+     * @param newValue the new value of this configuration element.
      */
-    @Nonnull
-    ConfigAdapter getAdapter();
-
-    /**
-     * Suggests that the configuration entry should be reloaded, at the lowest
-     * possible reload level.
-     */
-    void refresh();
+    void setValue(@Nonnull V newValue);
 
     /**
      * Reloads the configuration element at the given update level, by
@@ -151,17 +144,18 @@ public interface ConfigEntry<V> {
      *
      * Specifically this method will do the following:
      * <ol>
-     * <li>Fetch the entry's new value from the configuration source.</li>
-     * <li>Validate the new fetched value against all constraints.</li>
-     * <li>Set the next value to the validated fetched value.</li>
-     * <li>Checks if the {@code reloadLevel} is less than
+     * <li><span style="text-decoration:line-through">Fetch the entry's new
+     * value from the configuration source.</span></li>
+     * <li><span style="text-decoration:line-through">Validate the new fetched
+     * value against all constraints.</span></li>
+     * <li><span style="text-decoration:line-through">Set the next value to the
+     * validated fetched value.</span></li>
+     * <li>Checks if the {@link ConfigState#getCurrentLevel()} is less than
      * {@link #getReloadLevel()}</li>
      * <li>Set the previous value to the current value.</li>
      * <li>Set the current value to the next value.</li>
      * </ol>
-     *
-     * @param reloadLevel the level to reload the configuration entry at.
      */
-    void reload(@Nonnegative short reloadLevel);
+    void reload();
 
 }
